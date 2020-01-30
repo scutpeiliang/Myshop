@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>商品详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" th:src="@{/js/jquery-3.2.1.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div class="panel panel-default">
+    <div class="panel-heading">秒杀商品详情</div>
+    <div><a href="/list">返回商品列表</a></div>
+    <table class="table" id="details">
+        <tr>
+            <td>商品名称</td>
+            <td colspan="3" th:text="${good.name}"></td>
+        </tr>
+        <tr>
+            <td>商品图片</td>
+            <td colspan="3"><img th:src="@{${good.img}}" width="200" height="200" /></td>
+        </tr>
+        <tr>
+            <td>商品描述</td>
+            <td colspan="6" th:text="${good.description}"></td>
+        </tr>
+        <tr>
+            <td>秒杀开始时间</td>
+            <td th:text="${#dates.format(good.beginTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td id="tips">
+                <input type="hidden" id="remainSeconds" th:value="${remainTime}" />
+                <input type="hidden" id="code" th:value="${code}"/>
+                <span th:if="${code eq 0}">秒杀倒计时：<span id="countDown" th:text="${remainTime}"></span>秒</span>
+                <span th:if="${code eq 1}">秒杀进行中</span>
+                <span th:if="${code eq 2}">秒杀已结束</span>
+            </td>
+            <td>
+                <form id="form" method="post" action="/buy">
+                    <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即秒杀</button>
+                    <input type="hidden" name="id" th:value="${good.gid}" />
+                    <input type="hidden" name="money" th:value="${good.discountPrice}"/>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>商品原价</td>
+            <td colspan="3" th:text="${good.price}"></td>
+        </tr>
+        <tr>
+            <td>秒杀价</td>
+            <td colspan="3" th:text="${good.discountPrice}"></td>
+        </tr>
+        <tr>
+            <td>库存数量</td>
+            <td colspan="3" th:text="${good.stock}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+<script>
+    $(function(){
+        countDown();
+    });
+
+    function countDown(){
+        var remainSeconds = $("#remainSeconds").val();
+        var code = $("#code").val();
+        var timeout;
+        if (code == 0) {//秒杀尚未开始
+            $("#buyButton").attr("disabled", true);
+            timeout = setTimeout(function() {
+                $("#countDown").text(remainSeconds - 1);
+                $("#remainSeconds").val(remainSeconds - 1);
+                countDown();
+            }, 1000);
+        } else if (code == 1) {//秒杀进行中
+            $("#buyButton").attr("disabled", false);
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+        } else {//秒杀已经结束
+            $("#buyButton").attr("disabled", true);
+        }
+    }
+
+</script>
+</html>

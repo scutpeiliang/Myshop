@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myshop
+    username: root
+    password: lovingme2333
+    type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+  redis:
+    host: localhost
+    port: 6379
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.cris.myshop.entity
+  configuration:
+    map-underscore-to-camel-case: true

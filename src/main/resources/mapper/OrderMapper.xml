@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cris.myshop.dao.OrderDao" >
+    <select id="getOrderByUsername" parameterType="String" resultType="order">
+        select * from orders o, users u where o.uid = u.uid and u.username = #{username}
+    </select>
+
+    <insert id="createNewOrder" parameterType="order" useGeneratedKeys="true" keyProperty="oid">
+        insert into orders (uid, gid, money, status, create_time, expire_time) values (#{uid}, #{gid}, #{money}, #{status}, #{createTime}, #{expireTime})
+    </insert>
+</mapper>

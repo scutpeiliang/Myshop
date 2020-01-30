@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>抢购失败</title>
+</head>
+<body>
+    <div class="panel panel-default">
+        <span id="msg" th:text="${msg}"></span>
+    </div>
+    <div>
+        <a th:if="${msg eq '限购一单！'}" th:href="'/order'">查看我的订单</a>
+        <a href="/list">返回商品列表</a>
+    </div>
+</body>
+</html>
